@@ -1,0 +1,11 @@
+const menuBtn=document.querySelector('.menu-btn');
+const nav=document.querySelector('.nav-links');
+menuBtn?.addEventListener('click',()=>nav.classList.toggle('open'));
+document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}})},{threshold:.08});
+document.querySelectorAll('.reveal,.project-card,.service,.process-grid>div,.gallery figure,.contact-box').forEach((el,i)=>{if(!el.classList.contains('reveal'))el.classList.add('reveal');el.style.transitionDelay=`${Math.min(i*.035,.24)}s`;observer.observe(el)});
+const cursor=document.querySelector('.cursor-glow');
+window.addEventListener('pointermove',e=>{if(cursor){cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px'}});
+const counters=document.querySelectorAll('[data-count]');
+const countObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(!entry.isIntersecting)return;const el=entry.target,target=Number(el.dataset.count);let current=0;const step=Math.max(1,Math.ceil(target/24));const timer=setInterval(()=>{current+=step;if(current>=target){current=target;clearInterval(timer)}el.textContent=current+'+'},38);countObserver.unobserve(el)})},{threshold:.5});
+counters.forEach(el=>countObserver.observe(el));
